@@ -13,6 +13,9 @@ def main(input_file):
 	# Make the output file name
 	output_file_name = texts.output_file_nameMaker(input_file)
 	
+	active_csv = os.path.join(desktop_path, output_file_name)
+	inactive_txt = os.path.join(desktop_path, "inactive_msisdns.txt")
+	
 	# Take the .xlsx file and extract the data
 	data_rows = texts.data_row_per_row(input_file)
 	
@@ -20,14 +23,14 @@ def main(input_file):
 	active_rows, inactive_rows = DB.process_msisdn_rows(data_rows) # Goes to the Data Base and checks all MSISDNs
 	
 	# Make 2 files, one .csv for "ACTIVE" and one .txt for "INACTIVE"
-	file_writer.write_files(active_rows, inactive_rows, os.path.join(desktop_path, output_file_name), os.path.join(desktop_path, "inactive_msisdns.txt"))
+	file_writer.write_files(active_rows, inactive_rows, active_csv, inactive_txt)
 	
 	# Copy Queries that are used to check if all stars have been assigned on clipboard 
 	texts.copy_queries()
 	
 	# Copy Email template on clipboard
 	# texts.copy_email()
-	message.send_message(os.path.join(desktop_path, output_file_name))
+	message.send_message(active_csv)
 
 # Run the main function
 if __name__ == "__main__":
