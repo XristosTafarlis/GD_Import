@@ -1,5 +1,6 @@
-# File that contains sensitive information about the Database
+# Files that contains sensitive information about the Database
 info.py
+message.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

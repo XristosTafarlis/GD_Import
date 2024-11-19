@@ -1,9 +1,9 @@
 import info
 
-def write_files(active, inactive, output):
+def write_files(active, inactive, active_file, inactive_file):
 	# Write active MSISDNs to CSV
 	if (len(active) > 0):
-		with open(output, 'w') as output_file:
+		with open(active_file, 'w') as output_file:
 			output_file.write("\n")  # Add a single blank line at the top
 			for i, row in enumerate(active):
 				if i == len(active) - 1:  # Check if it's the last row
@@ -13,7 +13,7 @@ def write_files(active, inactive, output):
 	
 	# Write inactive MSISDNs to TXT if there are any
 	if (len(inactive) > 0):
-		with open('inactive_msisdns.txt', 'w') as inactive_MSISDNs_file:
+		with open(inactive_file, 'w') as inactive_MSISDNs_file:
 			# Construct the SQL query
 			formatted_msisdns = ',\n'.join([f"		'{msisdn}'" for msisdn in inactive])
 			
