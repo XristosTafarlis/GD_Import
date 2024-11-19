@@ -39,7 +39,7 @@ def write_files(active, inactive, output):
 			formatted_msisdns = ',\n'.join([f"		'{msisdn}'" for msisdn in inactive])
 			
 			# Write the query to the file
-			query = (f"SELECT\n	*\nFROM\n	{info.schema}.{info.table1}\nWHERE\n	{info.column1} IN (\n{formatted_msisdns}\n	)\n	OR {info.column2} IN (\n{formatted_msisdns}\n	);")
+			query = (info.query0_p1 + formatted_msisdns + info.query0_p2 + formatted_msisdns + info.query0_p3)
 			inactive_MSISDNs_file.write(query)
 
 def main(input_file):
