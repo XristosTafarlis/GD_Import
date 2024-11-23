@@ -4,9 +4,9 @@ def write_files(active, inactive, active_file, inactive_file):
 	# Write active MSISDNs to CSV
 	if (len(active) > 0):
 		with open(active_file, 'w') as output_file:
-			output_file.write("\n")  # Add a single blank line at the top
+			output_file.write("\n") # Add a single blank line at the top
 			for i, row in enumerate(active):
-				if i == len(active) - 1:  # Check if it's the last row
+				if i == len(active) - 1: # Check if it's the last row
 					output_file.write(row)
 				else:
 					output_file.write(row + "\n")
