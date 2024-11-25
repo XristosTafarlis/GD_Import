@@ -25,7 +25,7 @@ def main(input_file):
 	# Make 2 files, one .csv for "ACTIVE" and one .txt for "INACTIVE"
 	file_writer.write_files(active_rows, inactive_rows, active_csv, inactive_txt)
 	
-	# message.send_message(active_csv)
+	message.send_message(active_csv)
 	
 	window.query_window()
 

@@ -47,7 +47,7 @@ def check_results_in_db():
 				result = cursor.fetchone()
 				
 				if (result and result[0] == 'SUCCESS'):
-					print("Procedure executed successfully, proceed to get the results")
+					print("Procedure executed successfully.")
 					
 					# Query to get the results of the procedure
 					cursor.execute(info.query3)
@@ -55,7 +55,7 @@ def check_results_in_db():
 					result = cursor.fetchall()
 					
 					if result:
-						print("DB accessed, data returned")
+						print("DB accessed, data returned.")
 						return result
 				else:
 					print("Procedure not executed, returning...")
