@@ -1,7 +1,7 @@
+import ui
 import os
 import sys
 import texts
-import window
 import message
 import file_writer
 
@@ -27,7 +27,7 @@ def main(input_file):
 	
 	message.send_message(active_csv)
 	
-	window.query_window()
+	ui.query_window()
 
 # Run the main function
 if __name__ == "__main__":
@@ -40,4 +40,4 @@ if __name__ == "__main__":
 			print(f"Skipping unsupported file: {input_file}")
 	else:
 		# If not, open the main window
-		window.main_widnow()
+		ui.main_widnow()
