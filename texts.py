@@ -25,7 +25,7 @@ def process_msisdn_rows(data):
 
 	for row in data:
 		parts = row.split(';')	# Split the row by semicolon
-		msisdn = parts[0]		# MSISDN is always present
+		msisdn = re.sub(r'\D', '', parts[0]) # Keep only digits in MSISDN
 		
 		# Assign default values using unpacking and defaults
 		stars = parts[1] if len(parts) > 1 and parts[1] else 0
