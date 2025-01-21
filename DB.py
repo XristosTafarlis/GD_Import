@@ -55,7 +55,7 @@ def check_results_in_db():
 					result = cursor.fetchall()
 					
 					if result:
-						print("DB accessed, data returned.")
+						print("DB accessed, data returned.\nLines : " + len(result))
 						return result
 				else:
 					print("Procedure not executed, returning...")

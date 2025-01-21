@@ -91,6 +91,8 @@ def query_window():
 				row = f"|{msisdn.center(info.msisdn)}|{stars.center(info.star)}|\n"
 				text_box.insert(tkinter.END, row)
 			
+			text_box.insert(tkinter.END, len(data))
+			
 			text_box.config(state = "disabled")
 			
 			root.lift()
