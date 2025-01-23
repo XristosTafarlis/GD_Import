@@ -1,18 +1,21 @@
+import re
 import info
 import winsound
 import oracledb
+import credentials
 from pathlib import Path
 
 home = str(Path.home())
 oracledb.init_oracle_client(home + "\\instantclient")
+db_user, db_password = credentials.initialize_credentials()
 
 def check_status_in_db(msisdn):
 # Function to check MSISDN status
 	try:
 		# Use "with" to ensure the connection is closed after the block
 		with oracledb.connect(
-			user = info.user,
-			password = info.password,
+			user = db_user,
+			password = db_password,
 			host = info.host,
 			service_name = info.service
 		) as connection:
@@ -27,16 +30,26 @@ def check_status_in_db(msisdn):
 				return (result and result[0] == 'ACTIVE')
 	
 	except oracledb.Error as e:
-		print(f"{info.error}: {e}")
-		exit(1) # Close the application.
+		error_message = str(e)
+		print(f"Database error occurred: {error_message}")
+		
+		# Check for invalid login error (ORA-01017)
+		if re.search(r'ORA-01017', error_message):
+			print("Invalid login credentials. Prompting user...")
+			user, password = credentials.prompt_for_credentials()
+			credentials.store_credentials_to_registry(user, password)
+		else:
+			print("An unexpected database error occurred.")
+			
+		exit(1)
 		return False
 
 def check_results_in_db():
 	try:
 		# Using "with" to ensure the connection is closed after the block
 		with oracledb.connect(
-			user = info.user,
-			password = info.password,
+			user = db_user,
+			password = db_password,
 			host = info.host,
 			service_name = info.service
 		) as connection:
