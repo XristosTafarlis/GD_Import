@@ -2,8 +2,8 @@ import DB
 import sys
 import main
 import info
-import winsound
 import tkinter
+import winsound
 import tkinter.filedialog
 
 def main_widnow():
@@ -72,10 +72,26 @@ def main_widnow():
 	root.mainloop()
 
 def query_window():
-	place_holder_text = "No data retrived from the Database..." # The text displayed on the text_box before the script gets and displays the data from the DB.
+	countdown_seconds = 10 # Countdown duration in seconds
 	
-	# Call the DB to get the final results
-	def call_db():
+	def update_countdown(remaining): # Update the text box with the remaining countdown time
+		
+		if remaining > 0:
+			text_box.config(state='normal')
+			text_box.delete("1.0", tkinter.END)
+			if remaining == 1:
+				text_box.insert(tkinter.END, f"No data,\nreloading in {remaining} second")
+			else:
+				text_box.insert(tkinter.END, f"No data,\nreloading in {remaining} seconds")
+			text_box.config(state='disabled')
+			# Continue the countdown
+			root.after(1000, update_countdown, remaining - 1)
+		else:
+			# When the countdown reaches 0, call the database function
+			call_db()
+		
+		
+	def call_db(): # Call the DB to get the final results and format them to the final window
 		print("Checking DB")
 		data = DB.check_results_in_db()
 		if data:
@@ -83,7 +99,7 @@ def query_window():
 			text_box.delete("1.0", tkinter.END)
 			
 			headers = f"|{'MSISDN'.center(info.msisdn)}|{'STARS'.center(info.star)}|\n"
-			separator = "|------------+--------|" + "\n"
+			separator = "|------------+--------|\n"
 			text_box.insert(tkinter.END, headers)
 			text_box.insert(tkinter.END, separator)
 			
@@ -91,7 +107,9 @@ def query_window():
 				row = f"|{msisdn.center(info.msisdn)}|{stars.center(info.star)}|\n"
 				text_box.insert(tkinter.END, row)
 			
-			text_box.insert(tkinter.END, len(data))
+			text_box.insert(tkinter.END, separator)
+			MSISDN_count = f"|{'MSISDN Count'.center(info.msisdn)}|{str(len(data)).center(info.star)}|"
+			text_box.insert(tkinter.END, MSISDN_count)
 			
 			text_box.config(state = "disabled")
 			
@@ -99,17 +117,18 @@ def query_window():
 			root.attributes('-topmost', True)  # Temporarily make the window topmost
 			root.attributes('-topmost', False) # Allow it to behave normally again
 			winsound.MessageBeep(winsound.MB_ICONASTERISK)
-		
-		root.after(60000, call_db)
+		else:
+			# Start the countdown again if there is no data returned
+			update_countdown(countdown_seconds)
 	
-	# Creating a new Tkinter window, similar to the 1st
+	# Creating a new Tkinter window, similar to the 1st in main_widnow()
 	root = tkinter.Tk()
 	root.configure(bg = "gray9")
 	root.title(info.title)
 	
 	# Center the window on the screen
-	window_width = 600
-	window_height = 400
+	window_width = 301
+	window_height = 520
 	screen_width = root.winfo_screenwidth()
 	screen_height = root.winfo_screenheight()
 	x_position = (screen_width // 2) - (window_width // 2)
@@ -128,15 +147,14 @@ def query_window():
 	# Add a text box for input
 	text_box = tkinter.Text(
 		root,
-		width = 46,
-		height = 15,
+		width = 32,
+		height = 20,
 		bd = 0,
 		fg = "gray80",
 		bg = "gray20",
 		font = ("Courier New", 16))
 	
 	text_box.pack(pady = 5)
-	text_box.insert(tkinter.END, place_holder_text)
 	text_box.config(state = "disabled")
 	
 	# Add a Copy button
@@ -158,7 +176,7 @@ def query_window():
 	
 	exit_button.pack(padx = 30, pady = 5)
 	
-	call_db() # Start the first DB query immediately
+	update_countdown(countdown_seconds) # Start the first 1 min countdown immediately
 	root.mainloop()
 
 def on_hover(event):

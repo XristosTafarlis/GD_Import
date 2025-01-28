@@ -35,11 +35,11 @@ def check_status_in_db(msisdn):
 		
 		# Check for invalid login error (ORA-01017)
 		if re.search(r'ORA-01017', error_message):
-			print("Invalid login credentials. Prompting user...")
+			print("Invalid login credentials. Prompting user...\n")
 			user, password = credentials.prompt_for_credentials()
 			credentials.store_credentials_to_registry(user, password)
 		else:
-			print("An unexpected database error occurred.")
+			print("An unexpected database error occurred.\n")
 			
 		exit(1)
 		return False
@@ -60,7 +60,7 @@ def check_results_in_db():
 				result = cursor.fetchone()
 				
 				if (result and result[0] == 'SUCCESS'):
-					print("Procedure executed successfully.")
+					print("Procedure executed successfully.\n")
 					
 					# Query to get the results of the procedure
 					cursor.execute(info.query3)
@@ -68,10 +68,10 @@ def check_results_in_db():
 					result = cursor.fetchall()
 					
 					if result:
-						print("DB accessed, data returned.\nLines : " + len(result))
+						print("DB accessed, data returned.\nLines : " + str(len(result)) + "\n")
 						return result
 				else:
-					print("Procedure not executed, returning...")
+					print("Procedure not executed, rerunning in 1min.\n")
 					return None
 	
 	except oracledb.Error as e:
