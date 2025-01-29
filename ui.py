@@ -72,7 +72,7 @@ def main_widnow():
 	root.mainloop()
 
 def query_window():
-	countdown_seconds = 10 # Countdown duration in seconds
+	countdown_seconds = 60 # Countdown duration in seconds
 	
 	def update_countdown(remaining): # Update the text box with the remaining countdown time
 		
